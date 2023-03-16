@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # 3rd-party apps
-    "rest_framework", 
+    "rest_framework",
+    "corsheaders",
     # Local
     'applications.accounts.apps.AccountsConfig',
     'applications.posts',
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -107,7 +109,8 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 
 # REST_FRAMEWORK CONFIGURATIONS
 REST_FRAMEWORK = {
-"DEFAULT_PERMISSION_CLASSES": [
-"rest_framework.permissions.AllowAny",
-],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",
+    ],
 }
+
