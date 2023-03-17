@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 
-function App() {
+//Import Components
+import NavBar from "./components/UI/NavBar.jsx";
+import { lazy, Suspense } from "react";
+
+const Home = lazy(() => import("./components/Home"));
+const Dashboard = lazy(() => import("./components/Dashboard"));
+const Login = lazy(() => import("./components/Login"));
+const Signup = lazy(() => import("./components/Signup"));
+const NoMatch = lazy(() => import("./components/NoMatch"));
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <NavBar />
+      <Suspense fallback={<div className="container">Loading...</div>}>
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="*" element={<NoMatch />} />
+        </Routes>
+      </Suspense>
+    </>
   );
-}
+};
 
 export default App;
