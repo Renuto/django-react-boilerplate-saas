@@ -29,48 +29,6 @@ const Login = (props) => {
         }
         setLoading(true);
     }
-    const tokenHandler = (data) => {
-        props.tokenHandler(data);
-    }
-    const userHandler = (data) => {
-        props.userHandler(data);
-    }
-
-    // useEffect(() => {
-    //     if (loading) {
-    //         const formdata = new FormData();
-    //         formdata.append("username", usernameEntered);
-    //         formdata.append("password", passwordEntered);
-
-    //         const requestOptions = {
-    //             method: 'POST',
-    //             body: formdata,
-    //         };
-
-    //         console.log(requestOptions);
-    //         fetch("http://localhost:8000/api/v1/dj-rest-auth/login/", requestOptions)
-    //             .then((response) => response.json())
-    //             .then((response) => {
-    //                 if (response.ok) {
-    //                     console.log(response);
-    //                     tokenHandler(response.key);
-    //                     userHandler(usernameEntered);
-    //                     localStorage.setItem("token", response.key);
-    //                     localStorage.setItem("user", usernameEntered);
-    //                     setError(false);
-    //                 }
-    //             })
-    //             .catch((e) => {
-    //                 console.log("login", e);
-    //                 setError(true);
-    //             }).finally(() => {
-    //                 setLoading(false);
-    //                 setUsernameEntered("");
-    //                 setPasswordEntered("");
-    //                 // navigate("/");
-    //             });
-    //     }
-    // });
 
     useEffect(() => {
         const login = async () => {
@@ -91,11 +49,11 @@ const Login = (props) => {
 
                 if (response.ok) {
                     const data = await response.json();
-                    tokenHandler(data.key);
-                    userHandler(usernameEntered);
                     setError(false);
                     localStorage.setItem("token", data.key);
                     localStorage.setItem("user", usernameEntered);
+                    props.loginHandler(true);
+                    props.userHandler(usernameEntered);
                     navigate("/dashboard");
                 } else {
                     setError(true);

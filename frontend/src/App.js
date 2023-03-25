@@ -13,19 +13,34 @@ const Signup = lazy(() => import("./components/Signup"));
 const NoMatch = lazy(() => import("./components/NoMatch"));
 
 const App = () => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+  const storedUser = localStorage.getItem('user');
+  const initialUser = storedUser ? storedUser : null;
+  const [user, setUser] = useState(initialUser);
+  const [isLogin, setIsLogin] = useState(null);
+  const loginHandler = (flag) => {
+    setIsLogin(flag);
+  };
 
   return (
     <>
-      <NavBar user={user}/>
+      <NavBar
+        login={isLogin}
+        loginHandler={loginHandler}
+        userHandler={setUser}
+        user={user}
+      />
       <Suspense fallback={<div className="container">Loading...</div>}>
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
           <Route
             path="/login"
-            element={<Login tokenHandler={setToken} userHandler={setUser} />}
+            element={
+              <Login
+                loginHandler={loginHandler}
+                userHandler={setUser}
+              />
+            }
           />
           {/* Dashboard requiere token */}
           <Route path="/dashboard" element={<Dashboard />} />
