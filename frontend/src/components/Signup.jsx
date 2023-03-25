@@ -1,61 +1,70 @@
-import React from "react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Signup = () => {
+const  Signup = () => {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password1, setPassword1] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState(null);
 
-    const [usernameEntered, setUsernameEntered] = useState("");
-
-    const [passwordEntered, setPasswordEntered] = useState("");
-
-    const usernameHandler = (event) => {
-        setUsernameEntered(event.target.value);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (password1 !== password2) {
+      setError("Passwords don't match");
+      return;
     }
-    const passwordHandler = (event) => {
-        setPasswordEntered(event.target.value);
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/v1/dj-rest-auth/registration/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, email, password1, password2 }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        console.log(data);  
+        const pElements = Object.entries(data).map(([key, value]) => (
+          <p key={key}>
+            {key}: {value[0]}
+          </p>
+        ));
+        setError(data ? pElements : 'Unknown error');
+        console.log(data);
+      } else {
+        navigate('/login');
+      }
+    } catch (error) {
+      console.error(error);
+      setError('Error registering user');
     }
+  };
 
-    const submitHandler = (event) => {
-        event.preventDefault();
-        if (
-            passwordEntered.trim().length === 0 ||
-            usernameEntered.trim().length === 0
-        ) {
-            // props.onError(true);
-            return null;
-        }
-        const userData = {
-            username: usernameEntered,
-            password: passwordEntered,
-        };
-        //   props.onAddUserData(userData);
-        setUsernameEntered("");
-        setPasswordEntered("");
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        Username:
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+      </div>
+      <div>
+        Email:
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      </div>
+      <div>
+        Password:
+        <input type="password" value={password1} onChange={(e) => setPassword1(e.target.value)} required />
+      </div>
+      <div>
+        Repeat password:
+        <input type="password" value={password2} onChange={(e) => setPassword2(e.target.value)} required />
+      </div>
+      {error}
+      <button type="submit">Register</button>
+    </form>
+  );
+};
 
-    }
-    return (
-        <>
-            <h1>Signup</h1>
-            <form onSubmit={submitHandler}>
-                <input onChange={usernameHandler}
-                    type="text"
-                    name="username"
-                    placeholder="Enter user name"
-                    value={usernameEntered}
-                ></input>
-                <input onChange={passwordHandler}
-                    type="password"
-                    name="password"
-                    placeholder="Enter password"
-                    value={passwordEntered}
-                ></input>
-                <button type="submit">Sign Up</button>
-            </form>
-            <p >
-              Already have account? <Link to="/login">Login</Link>
-            </p>
-        </>
-    );
-}
+export default  Signup;
 
-export default Signup;
