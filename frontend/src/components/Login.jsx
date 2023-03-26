@@ -2,8 +2,6 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-//import Services from "../services/Services";
-
 const Login = (props) => {
     const [usernameEntered, setUsernameEntered] = useState("");
     const [passwordEntered, setPasswordEntered] = useState("");

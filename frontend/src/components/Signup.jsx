@@ -34,6 +34,10 @@ const  Signup = () => {
         setError(data ? pElements : 'Unknown error');
         console.log(data);
       } else {
+        setUsername('');
+        setPassword1('');
+        setPassword2('');
+        setEmail('');
         navigate('/login');
       }
     } catch (error) {
