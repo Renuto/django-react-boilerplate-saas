@@ -1,7 +1,7 @@
 #****************** backend **************************
 backend/.venv/
 backend/User.txt
-backend/.vscode
+backend/.vscode/
 # byte-compiled / optimized / DLL files
 backend/__pycache__/
 backend/*.py[cod]
