@@ -25,14 +25,12 @@ const  Signup = () => {
       });
       const data = await response.json();
       if (!response.ok) {
-        console.log(data);  
         const pElements = Object.entries(data).map(([key, value]) => (
           <p key={key}>
             {key}: {value[0]}
           </p>
         ));
         setError(data ? pElements : 'Unknown error');
-        console.log(data);
       } else {
         setUsername('');
         setPassword1('');
@@ -41,7 +39,6 @@ const  Signup = () => {
         navigate('/login');
       }
     } catch (error) {
-      console.error(error);
       setError('Error registering user');
     }
   };

@@ -19,7 +19,7 @@ const NavBar = (props) => {
       });
       const data = await response.json();
       setLogoutResponse(data);
-     
+
       props.loginHandler(null);
       props.userHandler(null);
       localStorage.setItem('token', '');
@@ -55,7 +55,11 @@ const NavBar = (props) => {
           </li>
 
           {props.user ?
-            <li><NavLink onClick={setIsLogoutHandler}>Logout</NavLink></li> :
+            <>
+              <li><NavLink onClick={setIsLogoutHandler}>Logout</NavLink></li>
+              <li><NavLink to="/BlogList">Blog List</NavLink></li>
+            </>
+            :
             <li><NavLink to="/login">Login</NavLink></li>
           }
 

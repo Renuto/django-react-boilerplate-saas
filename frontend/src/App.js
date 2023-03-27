@@ -10,10 +10,13 @@ const Home = lazy(() => import("./components/Home"));
 const Dashboard = lazy(() => import("./components/Dashboard"));
 const Login = lazy(() => import("./components/Login"));
 const Signup = lazy(() => import("./components/Signup"));
+const BlogList = lazy(() => import("./components/BlogList"));
+const BlogPost = lazy(() => import("./components/BlogPost"));
 const NoMatch = lazy(() => import("./components/NoMatch"));
 
 const App = () => {
-  const storedUser = localStorage.getItem('user');
+  const [id, setId] = useState('');
+  const storedUser = localStorage.getItem("user");
   const initialUser = storedUser ? storedUser : null;
   const [user, setUser] = useState(initialUser);
   const [isLogin, setIsLogin] = useState(null);
@@ -36,14 +39,14 @@ const App = () => {
           <Route
             path="/login"
             element={
-              <Login
-                loginHandler={loginHandler}
-                userHandler={setUser}
-              />
+              <Login loginHandler={loginHandler} userHandler={setUser} />
             }
           />
           {/* Dashboard requiere token */}
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/BlogList" element={<BlogList setId={setId}/>} />
+          <Route path="/blog/:id" element={<BlogPost />} />
+
           <Route path="*" element={<NoMatch />} />
         </Routes>
       </Suspense>
